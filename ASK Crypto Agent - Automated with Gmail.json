@@ -1,0 +1,141 @@
+{
+  "name": "ASK Crypto Agent - Automated with Gmail",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "id": "43153298-6607-40b8-8b8f-e7a669112bc1",
+      "name": "Every Hour Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -464,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://chantay-mightiest-unnecessitously.ngrok-free.dev/query",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "q",
+              "value": "Analyze the current market situation for BTC. Is the trend bullish or bearish based on the 24h volume and price change?"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "740e8b76-2a0f-4fde-9337-ee5b6bcc61b5",
+      "name": "Ask Crypto Agent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -240,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C095WT2SMBK",
+          "mode": "id"
+        },
+        "text": "=🤖 **Crypto Market Analysis - Hourly Report**\n\n📊 **Query:** {{ $node[\"Ask Crypto Agent\"].json[\"query\"] || \"Market Analysis\" }}\n\n💬 **AI Response:**\n{{ $node[\"Ask Crypto Agent\"].json[\"response\"] || $node[\"Ask Crypto Agent\"].json[\"answer\"] || \"No response available\" }}\n\n⏰ **Generated:** {{ $now.format('YYYY-MM-DD HH:mm:ss') }}\n\n_Powered by DevDocs AI with AWS Bedrock & Claude 3.5_",
+        "otherOptions": {}
+      },
+      "id": "136eed7c-671c-4cc7-a728-5b5ee524583d",
+      "name": "Send to Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.1,
+      "position": [
+        -16,
+        -64
+      ],
+      "webhookId": "a2e06e13-2732-4fe2-97ba-94d563db6797",
+      "credentials": {
+        "slackApi": {
+          "id": "xTOpuY34ApxO38vf",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oauth2",
+        "sendTo": "arni.nemeth@gmail.com",
+        "subject": "=🤖 Crypto Market Analysis - {{ $now.format('MMM DD, YYYY [at] HH:mm') }}",
+        "message": "=<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<style>\n  body {\n    margin: 0;\n    padding: 0;\n    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n    background-color: #f4f4f4;\n  }\n  .email-container {\n    max-width: 600px;\n    margin: 20px auto;\n    background: white;\n    border-radius: 12px;\n    overflow: hidden;\n    box-shadow: 0 4px 6px rgba(0,0,0,0.1);\n  }\n  .header {\n    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n    color: white;\n    padding: 30px 20px;\n    text-align: center;\n  }\n  .header h1 {\n    margin: 0;\n    font-size: 24px;\n    font-weight: 600;\n  }\n  .header p {\n    margin: 8px 0 0 0;\n    opacity: 0.9;\n    font-size: 14px;\n  }\n  .content {\n    padding: 30px 20px;\n  }\n  .section {\n    margin-bottom: 25px;\n  }\n  .section h2 {\n    color: #333;\n    font-size: 16px;\n    margin: 0 0 12px 0;\n    font-weight: 600;\n    border-left: 4px solid #667eea;\n    padding-left: 12px;\n  }\n  .query-box {\n    background: #f8f9fa;\n    padding: 15px;\n    border-radius: 8px;\n    border: 1px solid #e9ecef;\n    font-weight: 500;\n    color: #495057;\n  }\n  .response-box {\n    background: #f8f9fa;\n    padding: 20px;\n    border-radius: 8px;\n    border: 1px solid #e9ecef;\n    line-height: 1.6;\n    color: #333;\n    white-space: pre-wrap;\n  }\n  .metadata {\n    display: flex;\n    justify-content: space-between;\n    padding: 15px;\n    background: #f8f9fa;\n    border-radius: 8px;\n    margin-top: 20px;\n  }\n  .metadata-item {\n    font-size: 13px;\n    color: #6c757d;\n  }\n  .metadata-item strong {\n    color: #333;\n    display: block;\n    margin-bottom: 4px;\n  }\n  .footer {\n    background: #f8f9fa;\n    padding: 20px;\n    text-align: center;\n    font-size: 12px;\n    color: #6c757d;\n    border-top: 1px solid #e9ecef;\n  }\n  .footer p {\n    margin: 5px 0;\n  }\n  .badge {\n    display: inline-block;\n    padding: 4px 8px;\n    background: #667eea;\n    color: white;\n    border-radius: 4px;\n    font-size: 11px;\n    font-weight: 600;\n    text-transform: uppercase;\n  }\n</style>\n</head>\n<body>\n<div class=\"email-container\">\n  <div class=\"header\">\n    <h1>🤖 Crypto Market Intelligence Agent</h1>\n    <p>Automated Hourly Market Analysis Report</p>\n  </div>\n  \n  <div class=\"content\">\n    <div class=\"section\">\n      <h2>📊 Analysis Query</h2>\n      <div class=\"query-box\">\n        {{ $node[\"Ask Crypto Agent\"].json[\"query\"] || \"Analyze the current market situation for BTC. Is the trend bullish or bearish based on the 24h volume and price change?\" }}\n      </div>\n    </div>\n    \n    <div class=\"section\">\n      <h2>💬 AI-Powered Response <span class=\"badge\">Claude 3.5</span></h2>\n      <div class=\"response-box\">\n        {{ $node[\"Ask Crypto Agent\"].json[\"response\"] || $node[\"Ask Crypto Agent\"].json[\"answer\"] || \"Analysis in progress or temporarily unavailable. Please check the next scheduled report.\" }}\n      </div>\n    </div>\n    \n    <div class=\"metadata\">\n      <div class=\"metadata-item\">\n        <strong>⏰ Generated At</strong>\n        {{ $now.format('YYYY-MM-DD HH:mm:ss') }}\n      </div>\n      <div class=\"metadata-item\">\n        <strong>🔄 Next Update</strong>\n        {{ $now.plus({hours: 1}).format('HH:mm:ss') }}\n      </div>\n      <div class=\"metadata-item\">\n        <strong>🤖 Powered By</strong>\n        AWS Bedrock\n      </div>\n    </div>\n  </div>\n  \n  <div class=\"footer\">\n    <p><strong>Crypto Market Intelligence Agent</strong></p>\n    <p>Automated analysis powered by AWS Bedrock (Claude 3.5 Sonnet) + LangChain</p>\n    <p>Built with n8n Automation • DevDocs AI Architecture</p>\n    <p style=\"margin-top: 15px; font-size: 11px;\">This is an automated report. To modify settings, access your n8n workflow.</p>\n  </div>\n</div>\n</body>\n</html>",
+        "options": {}
+      },
+      "id": "984a6fb1-1bca-4875-a709-2520eb0570aa",
+      "name": "Send Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        208,
+        -64
+      ],
+      "webhookId": "9081b8bf-bd92-4707-bf48-e45834768b7f"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Every Hour Schedule": {
+      "main": [
+        [
+          {
+            "node": "Ask Crypto Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ask Crypto Agent": {
+      "main": [
+        [
+          {
+            "node": "Send to Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send to Slack": {
+      "main": [
+        [
+          {
+            "node": "Send Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "0cbf7a85-e9e5-4f9a-ab28-cb7fd35ddec1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "cd93a34108e55d377e7be7a09afb339d52eaa01006aedd0402ecf40aff240be4"
+  },
+  "id": "P606cF0rV9iEtJNW",
+  "tags": []
+}
