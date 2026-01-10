@@ -1,0 +1,2 @@
+# An-AI-powered-Documentation-Market-Intelligence-Platform
+🚀 After long hours of creating and testing, I finally shipped it: DevDocs AI An AI-powered platform that turns 10+ minute documentation searches into 2-second answers — plus automated market intelligence delivered straight to Slack &amp; Email.  What it does: 📚 Ask questions in plain English → Get instant, sourced answers 📊 Hourly AI market
